@@ -1,82 +1,71 @@
-# Lightweight React Template for KAVIA
+# Supabase Auth React App (Ocean Professional)
 
-This project provides a minimal React template with a clean, modern UI and minimal dependencies.
+This React app provides email/password authentication using Supabase with a clean, modern Ocean Professional theme.
 
 ## Features
 
-- **Lightweight**: No heavy UI frameworks - uses only vanilla CSS and React
-- **Modern UI**: Clean, responsive design with KAVIA brand styling
-- **Fast**: Minimal dependencies for quick loading times
-- **Simple**: Easy to understand and modify
+- Email/password login and signup
+- Client-side validation with accessible error messages
+- Loading and success/error states
+- Session persistence and auth state subscription
+- Sign out and session display
+- Accessible inputs and focus styles
+- Ocean Professional theme (primary #2563EB, success/secondary #F59E0B, error #EF4444)
 
-## Getting Started
+## Prerequisites
 
-In the project directory, you can run:
+- Node.js 16+ and npm
+- A Supabase project with Email/Password auth enabled
 
-### `npm start`
+## Environment variables
 
-Runs the app in development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+Create a `.env` file in this folder (react_frontend) with:
 
-### `npm test`
-
-Launches the test runner in interactive watch mode.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-## Customization
-
-### Colors
-
-The main brand colors are defined as CSS variables in `src/App.css`:
-
-```css
-:root {
-  --kavia-orange: #E87A41;
-  --kavia-dark: #1A1A1A;
-  --text-color: #ffffff;
-  --text-secondary: rgba(255, 255, 255, 0.7);
-  --border-color: rgba(255, 255, 255, 0.1);
-}
+```
+REACT_APP_SUPABASE_URL=your_supabase_project_url
+REACT_APP_SUPABASE_KEY=your_supabase_anon_key
 ```
 
-### Components
+Notes:
+- The variables must be prefixed with REACT_APP_ so React can access them.
+- Do not commit secrets to version control.
 
-This template uses pure HTML/CSS components instead of a UI framework. You can find component styles in `src/App.css`. 
+## Supabase configuration
 
-Common components include:
-- Buttons (`.btn`, `.btn-large`)
-- Container (`.container`)
-- Navigation (`.navbar`)
-- Typography (`.title`, `.subtitle`, `.description`)
+In Supabase Dashboard:
+- Enable Email Auth: Authentication -> Providers -> Email -> Enable "Email" and "Password".
+- Optionally configure email confirmation and redirect URLs as needed for your environment.
 
-## Learn More
+## Install and run
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+```
+npm install
+npm start
+```
 
-### Code Splitting
+App starts at http://localhost:3000.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+## Project structure
 
-### Analyzing the Bundle Size
+- src/lib/supabaseClient.js: Initializes Supabase client from env vars
+- src/components/Input.js: Accessible input with error/helper text
+- src/components/AuthCard.js: Login/Signup, validation, session handling, sign out
+- src/components/Navbar.js: Minimal top navbar
+- src/App.js: Renders Navbar, AuthCard, subscribes to auth state changes
+- src/App.css, src/index.css: Ocean Professional theme styles
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+## Accessibility
 
-### Making a Progressive Web App
+- Semantic labels on inputs
+- aria-invalid and aria-describedby for error mapping
+- Focus-visible rings for keyboard navigation
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+## Troubleshooting
 
-### Advanced Configuration
+- If you see "Supabase configuration missing", ensure `.env` has REACT_APP_SUPABASE_URL and REACT_APP_SUPABASE_KEY and restart the dev server.
+- Ensure Email/Password auth is enabled in Supabase.
+- Check browser console for network errors to the Supabase project URL.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+## License
 
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+MIT

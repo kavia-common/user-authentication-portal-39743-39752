@@ -1,47 +1,52 @@
-import React, { useState, useEffect } from 'react';
-import logo from './logo.svg';
+import React, { useEffect, useState } from 'react';
 import './App.css';
+import './index.css';
+import Navbar from './components/Navbar';
+import AuthCard from './components/AuthCard';
+import supabase from './lib/supabaseClient';
 
 // PUBLIC_INTERFACE
 function App() {
-  const [theme, setTheme] = useState('light');
+  const [theme] = useState('light'); // static theme for this app (Ocean Professional uses light background)
+  const [session, setSession] = useState(null);
 
-  // Effect to apply theme to document element
+  // Apply data-theme attribute
   useEffect(() => {
     document.documentElement.setAttribute('data-theme', theme);
   }, [theme]);
 
-  // PUBLIC_INTERFACE
-  const toggleTheme = () => {
-    setTheme(prevTheme => prevTheme === 'light' ? 'dark' : 'light');
-  };
+  // Subscribe to Supabase auth changes and fetch current session
+  useEffect(() => {
+    let isMounted = true;
+
+    async function initSession() {
+      const { data } = await supabase.auth.getSession();
+      if (isMounted) setSession(data.session);
+    }
+    initSession();
+
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((_event, newSession) => {
+      setSession(newSession);
+    });
+
+    return () => {
+      isMounted = false;
+      subscription?.unsubscribe?.();
+    };
+  }, []);
 
   return (
-    <div className="App">
-      <header className="App-header">
-        <button 
-          className="theme-toggle" 
-          onClick={toggleTheme}
-          aria-label={`Switch to ${theme === 'light' ? 'dark' : 'light'} mode`}
-        >
-          {theme === 'light' ? '🌙 Dark' : '☀️ Light'}
-        </button>
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
+    <div className="ocean-app">
+      <div className="ocean-gradient" aria-hidden="true" />
+      <Navbar />
+      <main className="container">
+        <AuthCard session={session} onSession={setSession} />
+        <p className="footer-note" aria-live="polite">
+          Secure authentication powered by Supabase.
         </p>
-        <p>
-          Current theme: <strong>{theme}</strong>
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      </main>
     </div>
   );
 }
