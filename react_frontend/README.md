@@ -34,7 +34,15 @@ Notes:
 
 In Supabase Dashboard:
 - Enable Email Auth: Authentication -> Providers -> Email -> Enable "Email" and "Password".
-- Optionally configure email confirmation and redirect URLs as needed for your environment.
+- URL Configuration:
+  - Site URL: http://localhost:3000/
+  - Redirect URLs (add each):
+    - http://localhost:3000/
+    - http://localhost:3000/*
+    - http://localhost:3000/auth/callback
+    - http://localhost:3000/auth/reset-password
+- Copy your Project URL and anon key from Settings -> API.
+- Create .env (see Environment variables section) and restart `npm start`.
 
 ## Install and run
 
